@@ -43,7 +43,7 @@ class KanbanBoardView {
 				<div class="inside"
 				style="background-color: ' . get_status_color($status) . '"
 				id="' . $status . '">
-				<h3 title="' . $status . '">' . $statusName . ' (' . sizeof($issues) . ')</h3>';
+				<h5 title="' . $status . '">' . $statusName . ' (' . sizeof($issues) . ')</h5>';
             $content .= implode("\n", $issues);
             $content .='</div>';  // inside
             $content .='</div>';  // column
