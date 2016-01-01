@@ -37,16 +37,18 @@ class KanbanBoardView {
         $t_status_array = MantisEnum::getAssocArrayIndexedByValues($status_codes);
 
         foreach ($t_status_array as $status => $statusCode) {
-            $issues = $this->renderIssues($status);
-            $statusName = string_display_line(get_enum_element('status', $status));
-            $content .= '<div class="column">
-				<div class="inside"
-				style="background-color: ' . get_status_color($status) . '"
-				id="' . $status . '">
-				<h5 title="' . $status . '">' . $statusName . ' (' . sizeof($issues) . ')</h5>';
-            $content .= implode("\n", $issues);
-            $content .='</div>';  // inside
-            $content .='</div>';  // column
+            if ($statusCode != "backlog" && $statusCode != "closed") {
+                $issues = $this->renderIssues($status);
+                $statusName = string_display_line(get_enum_element('status', $status));
+                $content .= '<div class="column">
+                                    <div class="inside"
+                                    style="background-color: ' . get_status_color($status) . '"
+                                    id="' . $status . '">
+                                    <h5 title="' . $status . '">' . $statusName . ' (' . sizeof($issues) . ')</h5>';
+                $content .= implode("\n", $issues);
+                $content .='</div>';  // inside
+                $content .='</div>';  // column
+            }
         }
         return $content;
     }
