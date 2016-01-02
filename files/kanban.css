@@ -2,11 +2,13 @@
     transform: rotate(3deg);
     -moz-transform: rotate(3deg);
     -webkit-transform: rotate(3deg);
+    box-shadow: 5px 5px 2px #888888;
 }
 .tilt.leftTilt {
     transform: rotate(-3deg);
     -moz-transform: rotate(-3deg);
     -webkit-transform: rotate(-3deg);
+    box-shadow: 5px 5px 2px #888888;
 }
 body {
     min-width: 520px;
@@ -23,6 +25,7 @@ body {
     padding: 0.5em;
     padding-bottom: 100px;
     height: 100%;
+    box-shadow: 5px 5px 2px #888888;
 }
 .column .inside h5 {
     text-align: center;
@@ -37,6 +40,7 @@ body {
     background: white;
     border-radius: 3px;
     font-size: 12px;
+    border: 1px solid #999;
 }
 .portlet-header {
     padding: 0.2em 0.3em;
