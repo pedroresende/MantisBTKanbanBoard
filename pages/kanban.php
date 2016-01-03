@@ -11,14 +11,28 @@ function debug($a) {
 
 class KanbanBoardView {
 
-    var $severity = NULL;
+    var $severity = null;
+    var $versions = null;
+    var $version = null;
+    var $project_id = null;
 
     function __construct() {
+        $this->project_id = helper_get_current_project();
         if (isset($_REQUEST['severity'])) { // isset to allow empty
             $this->severity = intval($_REQUEST['severity']);
             $_SESSION[__CLASS__]['severity'] = $this->severity;
         } else {
             $this->severity = $_SESSION[__CLASS__]['severity'];
+        }
+        $versions = version_get_all_rows($this->project_id, /* released = */ null, /* obsolete = */ null);
+        $this->versions = [];
+        foreach ($versions as $version) {
+            if ($_REQUEST['versions'] === $version['version']) { // isset to allow empty
+                $this->versions[$version['version']] = [$version['version'], "true"];
+                $this->version = $version['version'];
+            } else {
+                $this->versions[$version['version']] = [$version['version'], "false"];
+            }
         }
     }
 
@@ -55,21 +69,26 @@ class KanbanBoardView {
 
     function renderIssues($status) {
         $content = array();
-        $t_project_id = helper_get_current_project();
         $t_bug_table = db_get_table('mantis_bug_table');
         $t_user_id = auth_get_current_user_id();
-        $specific_where = helper_project_specific_where($t_project_id, $t_user_id);
+        $specific_where = helper_project_specific_where($this->project_id, $t_user_id);
         if ($this->severity) {
             $severityCond = '= ' . $this->severity;
         } else {
             $severityCond = '> -1';
         }
 
+        if ($this->version) {
+            $versionCon = '= ' . $this->version;
+        } else {
+            $versionCon = '> -1';
+        }
         $query = "SELECT *
 			FROM $t_bug_table
 			WHERE $specific_where
 			AND status = $status
 			AND severity $severityCond
+                        AND version $versionCon
 			ORDER BY last_updated DESC
 			LIMIT 20";
         $result = db_query_bound($query);
@@ -78,7 +97,7 @@ class KanbanBoardView {
             $row = db_fetch_array($result);
             $content[] = '<div class="portlet ui-helper-clearfix" id="' . $row['id'] . '"> 
 			<div class="portlet-header">'
-                    . icon_get_status_icon($row['priority']) .' ' .
+                    . icon_get_status_icon($row['priority']) . ' ' .
                     string_get_bug_view_link($row['id']) . ': ' .
                     $row['summary'] . '</div>
 			<div class="portlet-content">' .
