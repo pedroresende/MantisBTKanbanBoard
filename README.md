@@ -24,13 +24,13 @@ $g_status_colors['analysis'] = '#B2B2FF';
 $g_status_colors['development'] = '#CCCCCC';
 
 
-$g_status_enum_workflow[BACKLOG]         ='20:inputQ,40:analysis,50:development,80:resolved';
+$g_status_enum_workflow[BACKLOG]         ='20:inputq,40:analysis,50:development,80:resolved';
 $g_status_enum_workflow[INPUTQ]     ='40:analysis,50:development,80:resolved';
-$g_status_enum_workflow[SPECIFICATION]    ='50:development,80:resolved';
-$g_status_enum_workflow[DEV]     ='60:testing,20:inputq,40:analysis,50developmentdev,80:resolved';
-$g_status_enum_workflow[TESTING]      ='80:resolved,20:inputq,50:development';
+$g_status_enum_workflow[ANALYSIS]    ='50:development,80:resolved';
+$g_status_enum_workflow[DEVELOPMENT]     ='60:testing,20:inputq,40:analysis,50:developmentdev,80:resolved';
+$g_status_enum_workflow[TESTING]      ='80:resolved,20:inputq,40:analysis,50:development';
 $g_status_enum_workflow[RESOLVED]     ='90:closed,20:inputq,50:development';
-$g_status_enum_workflow[CLOSED]       ='20:inputq,50:development';
+$g_status_enum_workflow[CLOSED]       ='20:inputq,40:analysis,50:development';
 ```
 
 Add a new file, to the root of mantis, called custom_constants_inc.php and add
